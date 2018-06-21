@@ -143,6 +143,13 @@ module.exports = class ZeroExExchange extends Exchange {
         });
     }
 
+    // generate a random 256-bit integer to use as a salt,
+    // so otherwise identical orders will have different hashes
+    // @returns {BigNumber}
+    nonce () {
+        return ZeroEx.generatePseudoRandomSalt();
+    }
+
     createLimitOrder ( ) {
       // TODO: sign order and send to relayer
     }
