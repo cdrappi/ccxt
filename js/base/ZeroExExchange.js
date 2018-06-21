@@ -13,6 +13,7 @@ module.exports = class ZeroExExchange extends Exchange {
         return this.deepExtend (super.describe (), {
             'id': '0x',
             'name': '0x',
+            'version': 'v0',
             'countries': undefined,
             'enableRateLimit': false,
             'rateLimit': undefined,
@@ -150,16 +151,35 @@ module.exports = class ZeroExExchange extends Exchange {
         return ZeroEx.generatePseudoRandomSalt();
     }
 
+    // sign an HTTP request to a relayer
+    // @param {string} path - e.g. 'token_pairs'
+    // @param {string} api - either 'public' or 'private'
+    // @param {string} method - standard relayer API supports 'GET' or 'POST'
+    // @param {Object} params
+    // @param {Object} headers
+    // @param {Object} body
+    // @returns {Object} content for HTTP request
+    signToRelayer (path, api = 'public', method = 'GET', params = {}, headers = undefined, body = undefined) {
+        let url = this.urls['api'] + '/' + this.version + path;
+        // TODO: zeroEx.signOrderHashAsync
+        return {
+            'url': url,
+            'method': method,
+            'body': body,
+            'headers': headers
+        };
+    }
+
     createLimitOrder ( ) {
       // TODO: sign order and send to relayer
     }
 
+    fetchTradingFees ( ) {
+      // TODO: /fees endpoint
+    }
 
     cancelOrder ( ) {
       // TODO: bring order on-chain to cancel before it expires
-    }
-    fetchTradingFees ( ) {
-      // TODO: /fees endpoint
     }
 
     createMarketOrder ( ) {
